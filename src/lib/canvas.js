@@ -59,9 +59,27 @@ function loadImage(src) {
  * Draw an image into a slot using cover fit (center crop)
  */
 function drawCover(ctx, img, x, y, w, h, borderRadius = 0, filter = 'none') {
-  ctx.save()
+  // Safari workaround: ctx.filter is often ignored when ctx.clip() is active.
+  // We draw the filtered image to an offscreen canvas first to bypass this bug.
+  const offCanvas = document.createElement('canvas')
+  offCanvas.width = w
+  offCanvas.height = h
+  const offCtx = offCanvas.getContext('2d')
 
-  // Clip to rounded rect
+  if (filter && filter !== 'none') {
+    offCtx.filter = filter
+  }
+
+  const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight)
+  const sw    = img.naturalWidth  * scale
+  const sh    = img.naturalHeight * scale
+  const sx    = (w - sw) / 2
+  const sy    = (h - sh) / 2
+
+  offCtx.drawImage(img, sx, sy, sw, sh)
+
+  // Now draw the offscreen canvas onto the main canvas WITH clipping applied
+  ctx.save()
   if (borderRadius > 0) {
     ctx.beginPath()
     ctx.roundRect(x, y, w, h, borderRadius)
@@ -72,17 +90,7 @@ function drawCover(ctx, img, x, y, w, h, borderRadius = 0, filter = 'none') {
     ctx.clip()
   }
 
-  if (filter && filter !== 'none') {
-    ctx.filter = filter
-  }
-
-  const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight)
-  const sw    = img.naturalWidth  * scale
-  const sh    = img.naturalHeight * scale
-  const sx    = x + (w - sw) / 2
-  const sy    = y + (h - sh) / 2
-
-  ctx.drawImage(img, sx, sy, sw, sh)
+  ctx.drawImage(offCanvas, x, y, w, h)
   ctx.restore()
 }
 

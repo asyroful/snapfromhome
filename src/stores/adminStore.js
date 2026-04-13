@@ -59,7 +59,7 @@ const useAdminStore = create(
         siteName: 'SnapFromHome',
         tagline: 'Your personal photobooth',
         showPoweredBy: true,
-        defaultCountdown: 7,
+        defaultCountdown: 5,
         maxUploadsPerDay: 5,
         cloudinaryCloudName: '',
       },
