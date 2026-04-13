@@ -80,53 +80,56 @@ export default function BoothPage() {
   /**
    * Start the countdown → capture sequence for one photo
    */
-  const startSingleCapture = useCallback(async (photoIndex, isRetake = false) => {
-    if (captureRef.current) return
-    captureRef.current = true
+  const startSingleCapture = useCallback((photoIndex, isRetake = false) => {
+    return new Promise((resolve) => {
+      if (captureRef.current) return resolve()
+      captureRef.current = true
 
-    setCurrentPhotoIndex(photoIndex)
-    setCaptureState('countdown')
-    setCountdown(defaultCountdown)
-    setIsCapturing(true)
+      setCurrentPhotoIndex(photoIndex)
+      setCaptureState('countdown')
+      setCountdown(defaultCountdown)
+      setIsCapturing(true)
 
-    let remaining = defaultCountdown
+      let remaining = defaultCountdown
 
-    timerRef.current = setInterval(async () => {
-      remaining -= 1
-      setCountdown(remaining)
+      timerRef.current = setInterval(async () => {
+        remaining -= 1
+        setCountdown(remaining)
 
-      // Beep on last 3 seconds
-      if (remaining <= 3 && remaining > 0) {
-        playCountdownBeep(remaining === 1 ? 1320 : 880)
-      }
-
-      if (remaining <= 0) {
-        clearTimer()
-        setCountdown(0)
-
-        // Flash + shutter sound
-        setShowFlash(true)
-        playShutter()
-        setTimeout(() => setShowFlash(false), 500)
-
-        // Capture from video
-        try {
-          const dataUrl = await captureVideoFrame(videoRef.current)
-          if (isRetake) {
-            updatePhoto(photoIndex, dataUrl)
-          } else {
-            addPhoto(dataUrl)
-          }
-          trackPhotoCaptured(photoIndex + 1)
-        } catch (e) {
-          console.error('Capture error:', e)
+        // Beep on last 3 seconds
+        if (remaining <= 3 && remaining > 0) {
+          playCountdownBeep(remaining === 1 ? 1320 : 880)
         }
 
-        setCaptureState('idle')
-        setIsCapturing(false)
-        captureRef.current = false
-      }
-    }, 1000)
+        if (remaining <= 0) {
+          clearTimer()
+          setCountdown(0)
+
+          // Flash + shutter sound
+          setShowFlash(true)
+          playShutter()
+          setTimeout(() => setShowFlash(false), 500)
+
+          // Capture from video
+          try {
+            const dataUrl = await captureVideoFrame(videoRef.current)
+            if (isRetake) {
+              updatePhoto(photoIndex, dataUrl)
+            } else {
+              addPhoto(dataUrl)
+            }
+            trackPhotoCaptured(photoIndex + 1)
+          } catch (e) {
+            console.error('Capture error:', e)
+          }
+
+          setCaptureState('idle')
+          setIsCapturing(false)
+          captureRef.current = false
+          resolve()
+        }
+      }, 750)
+    })
   }, [addPhoto, updatePhoto, playShutter, playCountdownBeep, setCaptureState, setCurrentPhotoIndex, trackPhotoCaptured, videoRef, defaultCountdown])
 
   /**
@@ -138,19 +141,11 @@ export default function BoothPage() {
     setCurrentPhotoIndex(0)
 
     for (let i = 0; i < TOTAL_PHOTOS; i++) {
-      await new Promise((resolve) => {
-        const check = setInterval(() => {
-          if (!captureRef.current) {
-            clearInterval(check)
-            resolve()
-          }
-        }, 200)
-      })
-
-      if (i < TOTAL_PHOTOS) {
-        await startSingleCapture(i)
-        // Wait a beat between photos to allow users to transition poses
-        if (i < TOTAL_PHOTOS - 1) await sleep(1800)
+      await startSingleCapture(i)
+      
+      // Wait a beat between photos to allow users to transition poses
+      if (i < TOTAL_PHOTOS - 1) {
+        await sleep(2000)
       }
     }
   }, [isAvailable, clearPhotos, setCurrentPhotoIndex, startSingleCapture])
