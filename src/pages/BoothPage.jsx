@@ -11,10 +11,10 @@ import CaptureProgress      from '../components/booth/CaptureProgress'
 import CameraFallback       from '../components/booth/CameraFallback'
 import Button               from '../components/ui/Button'
 import useBoothStore        from '../stores/boothStore'
+import useAdminStore        from '../stores/adminStore'
 import { captureVideoFrame } from '../lib/canvas'
 
 const TOTAL_PHOTOS   = 3
-const COUNTDOWN_SECS = 5   // 5 seconds per photo
 
 export default function BoothPage() {
   const navigate = useNavigate()
@@ -47,8 +47,10 @@ export default function BoothPage() {
   // Analytics
   const { trackPhotoCaptured } = useAnalytics()
 
+  const defaultCountdown = useAdminStore((s) => s.siteSettings?.defaultCountdown) || 5
+
   // Local state
-  const [countdown,  setCountdown]  = useState(COUNTDOWN_SECS)
+  const [countdown,  setCountdown]  = useState(defaultCountdown)
   const [showFlash,  setShowFlash]  = useState(false)
   const [isCapturing, setIsCapturing] = useState(false)
 
@@ -84,10 +86,10 @@ export default function BoothPage() {
 
     setCurrentPhotoIndex(photoIndex)
     setCaptureState('countdown')
-    setCountdown(COUNTDOWN_SECS)
+    setCountdown(defaultCountdown)
     setIsCapturing(true)
 
-    let remaining = COUNTDOWN_SECS
+    let remaining = defaultCountdown
 
     timerRef.current = setInterval(async () => {
       remaining -= 1
@@ -125,7 +127,7 @@ export default function BoothPage() {
         captureRef.current = false
       }
     }, 1000)
-  }, [addPhoto, updatePhoto, playShutter, playCountdownBeep, setCaptureState, setCurrentPhotoIndex, trackPhotoCaptured, videoRef])
+  }, [addPhoto, updatePhoto, playShutter, playCountdownBeep, setCaptureState, setCurrentPhotoIndex, trackPhotoCaptured, videoRef, defaultCountdown])
 
   /**
    * Main "Start" button — kicks off automatic capture of all 3 photos
@@ -147,8 +149,8 @@ export default function BoothPage() {
 
       if (i < TOTAL_PHOTOS) {
         await startSingleCapture(i)
-        // Wait a beat between photos
-        if (i < TOTAL_PHOTOS - 1) await sleep(800)
+        // Wait a beat between photos to allow users to transition poses
+        if (i < TOTAL_PHOTOS - 1) await sleep(1800)
       }
     }
   }, [isAvailable, clearPhotos, setCurrentPhotoIndex, startSingleCapture])
@@ -315,7 +317,7 @@ export default function BoothPage() {
 
           {isCapturing && (
             <div className="text-center text-booth-muted text-sm animate-pulse">
-              Get ready… {COUNTDOWN_SECS - countdown > 0 ? `(${countdown}s remaining)` : ''}
+              Get ready… {defaultCountdown - countdown > 0 ? `(${countdown}s remaining)` : ''}
             </div>
           )}
         </div>

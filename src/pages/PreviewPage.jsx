@@ -15,8 +15,8 @@ import {
 const EFFECTS = [
   { id: 'none', label: 'Normal', filter: 'none' },
   { id: 'bw', label: 'B&W', filter: 'grayscale(100%)' },
-  { id: 'vintage', label: 'Vintage', filter: 'sepia(0.6) contrast(1.1) brightness(0.9) hue-rotate(-10deg)' },
-  { id: 'warm', label: 'Warm', filter: 'sepia(0.3) saturate(1.4) hue-rotate(-15deg)' },
+  { id: 'vintage', label: 'Vintage', filter: 'sepia(60%) contrast(110%) brightness(90%) hue-rotate(350deg)' },
+  { id: 'warm', label: 'Warm', filter: 'sepia(30%) saturate(140%) hue-rotate(345deg)' },
 ]
 
 export default function PreviewPage() {
