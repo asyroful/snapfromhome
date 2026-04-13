@@ -58,13 +58,18 @@ function loadImage(src) {
 /**
  * Draw an image into a slot using cover fit (center crop)
  */
-function drawCover(ctx, img, x, y, w, h, borderRadius = 0, effectId = 'none') {
-  // Safari workaround: ctx.filter is often ignored or buggy.
-  // We draw to an offscreen canvas and use blend modes instead of CSS filters.
+function drawCover(ctx, img, x, y, w, h, borderRadius = 0, filter = 'none') {
+  // Safari workaround: ctx.filter is often ignored when ctx.clip() is active.
+  // We draw the filtered image to an offscreen canvas first to bypass this bug.
+  // Note: Standard CSS filter strings are used here for optimal visual quality.
   const offCanvas = document.createElement('canvas')
   offCanvas.width = w
   offCanvas.height = h
   const offCtx = offCanvas.getContext('2d')
+
+  if (filter && filter !== 'none') {
+    offCtx.filter = filter
+  }
 
   const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight)
   const sw    = img.naturalWidth  * scale
@@ -72,36 +77,7 @@ function drawCover(ctx, img, x, y, w, h, borderRadius = 0, effectId = 'none') {
   const sx    = (w - sw) / 2
   const sy    = (h - sh) / 2
 
-  // 1. Draw original photo
   offCtx.drawImage(img, sx, sy, sw, sh)
-
-  // 2. Apply blend mode filters for maximum cross-browser compatibility
-  if (effectId === 'bw') {
-    offCtx.globalCompositeOperation = 'color'
-    offCtx.fillStyle = '#000000'
-    offCtx.fillRect(0, 0, w, h)
-    offCtx.globalCompositeOperation = 'source-over'
-  } else if (effectId === 'vintage') {
-    // Sepia tone
-    offCtx.globalCompositeOperation = 'color'
-    offCtx.fillStyle = '#704214'
-    offCtx.fillRect(0, 0, w, h)
-    // Add warm contrast
-    offCtx.globalCompositeOperation = 'multiply'
-    offCtx.fillStyle = 'rgba(255, 230, 200, 0.4)'
-    offCtx.fillRect(0, 0, w, h)
-    offCtx.globalCompositeOperation = 'source-over'
-  } else if (effectId === 'warm') {
-    // Warm orange cast
-    offCtx.globalCompositeOperation = 'color'
-    offCtx.fillStyle = '#d68b31'
-    offCtx.fillRect(0, 0, w, h)
-    // Slight brightness bump
-    offCtx.globalCompositeOperation = 'overlay'
-    offCtx.fillStyle = 'rgba(255, 180, 50, 0.15)'
-    offCtx.fillRect(0, 0, w, h)
-    offCtx.globalCompositeOperation = 'source-over'
-  }
 
   // Now draw the offscreen canvas onto the main canvas WITH clipping applied
   ctx.save()
