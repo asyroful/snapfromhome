@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Download, Printer, RotateCcw, Share2, Home,
-  Loader2, Camera, CheckCircle2, ChevronDown, Film, Scissors
+  Loader2, Camera, CheckCircle2, ChevronDown, Film, Scissors, Palette
 } from 'lucide-react'
 import Button          from '../components/ui/Button'
 import useBoothStore   from '../stores/boothStore'
@@ -11,6 +11,13 @@ import { useAnalytics } from '../hooks/useAnalytics'
 import {
   renderStrip, renderPrintLayout, canvasToDataUrl, canvasToBlob,
 } from '../lib/canvas'
+
+const EFFECTS = [
+  { id: 'none', label: 'Normal', filter: 'none' },
+  { id: 'bw', label: 'B&W', filter: 'grayscale(100%)' },
+  { id: 'vintage', label: 'Vintage', filter: 'sepia(0.6) contrast(1.1) brightness(0.9) hue-rotate(-10deg)' },
+  { id: 'warm', label: 'Warm', filter: 'sepia(0.3) saturate(1.4) hue-rotate(-15deg)' },
+]
 
 export default function PreviewPage() {
   const navigate = useNavigate()
@@ -28,6 +35,7 @@ export default function PreviewPage() {
 
   const [isGenerating, setIsGenerating] = useState(false)
   const [activeTab,    setActiveTab]    = useState('single')
+  const [activeEffectId, setActiveEffectId] = useState('none')
   const [downloadingId, setDownloadingId] = useState(null)
   const isGeneratedRef = useRef(false)
 
@@ -46,16 +54,17 @@ export default function PreviewPage() {
     generateStrips()
   }, [selectedFrame, photos])
 
-  const generateStrips = async () => {
+  const generateStrips = async (effectId = activeEffectId) => {
     setIsGenerating(true)
+    const eff = EFFECTS.find(e => e.id === effectId)?.filter || 'none'
     try {
       // Single strip
-      const stripCanvas  = await renderStrip(photos, selectedFrame)
+      const stripCanvas  = await renderStrip(photos, selectedFrame, { effectFilter: eff })
       const stripDataUrl = canvasToDataUrl(stripCanvas, 'image/jpeg', 0.90)
       setSingleUrl(stripDataUrl)
 
       // Print layout
-      const printCanvas  = await renderPrintLayout(photos, selectedFrame)
+      const printCanvas  = await renderPrintLayout(photos, selectedFrame, { effectFilter: eff })
       const printDataUrl = canvasToDataUrl(printCanvas, 'image/jpeg', 0.88)
       setPrintUrl(printDataUrl)
 
@@ -181,6 +190,30 @@ export default function PreviewPage() {
                   }`}
                 >
                   {label}
+                </button>
+              ))}
+            </div>
+
+            {/* Effect switcher */}
+            <div className="flex gap-2 p-2 overflow-x-auto hide-scrollbar glass-card">
+              <div className="flex items-center gap-1.5 px-2 text-booth-muted">
+                <Palette size={14} />
+              </div>
+              {EFFECTS.map((eff) => (
+                <button
+                  key={eff.id}
+                  onClick={() => {
+                    if (activeEffectId === eff.id) return
+                    setActiveEffectId(eff.id)
+                    generateStrips(eff.id)
+                  }}
+                  className={`whitespace-nowrap px-4 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                    activeEffectId === eff.id
+                      ? 'bg-booth-pink/20 text-booth-pink border border-booth-pink/30'
+                      : 'text-booth-muted hover:text-booth-text bg-white/[0.03] border border-transparent'
+                  }`}
+                >
+                  {eff.label}
                 </button>
               ))}
             </div>

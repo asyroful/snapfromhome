@@ -58,7 +58,7 @@ function loadImage(src) {
 /**
  * Draw an image into a slot using cover fit (center crop)
  */
-function drawCover(ctx, img, x, y, w, h, borderRadius = 0) {
+function drawCover(ctx, img, x, y, w, h, borderRadius = 0, filter = 'none') {
   ctx.save()
 
   // Clip to rounded rect
@@ -70,6 +70,10 @@ function drawCover(ctx, img, x, y, w, h, borderRadius = 0) {
     ctx.beginPath()
     ctx.rect(x, y, w, h)
     ctx.clip()
+  }
+
+  if (filter && filter !== 'none') {
+    ctx.filter = filter
   }
 
   const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight)
@@ -110,7 +114,7 @@ export async function renderStrip(photoDataUrls, frameConfig, overrides = {}) {
 
     try {
       const img = await loadImage(photo)
-      drawCover(ctx, img, slot.x, slot.y, slot.width, slot.height, slot.borderRadius || 0)
+      drawCover(ctx, img, slot.x, slot.y, slot.width, slot.height, slot.borderRadius || 0, overrides.effectFilter || 'none')
     } catch (e) {
       console.warn(`Failed to load photo [${i}]`, e)
       // Draw placeholder
@@ -230,7 +234,7 @@ export async function renderPrintLayout(photoDataUrls, frameConfig, overrides = 
       if (photo) {
         try {
           const img = await loadImage(photo)
-          drawCover(ctx, img, slotX, slotY, PHOTO_W, PHOTO_H, frameConfig.slots?.[i]?.borderRadius || 0)
+          drawCover(ctx, img, slotX, slotY, PHOTO_W, PHOTO_H, frameConfig.slots?.[i]?.borderRadius || 0, overrides.effectFilter || 'none')
         } catch {
           ctx.fillStyle = '#dddddd'
           ctx.fillRect(slotX, slotY, PHOTO_W, PHOTO_H)
