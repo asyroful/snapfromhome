@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Camera, Sparkles, ChevronRight, Star, Download, Zap, LayoutTemplate, Check, Heart } from 'lucide-react'
 import Button from '../components/ui/Button'

@@ -474,7 +474,7 @@ function FrameEditor({ frame, onSave, onCancel, isNew = false }) {
                   className="input-field"
                   value={data.footer?.text || ''}
                   onChange={(e) => update('footer.text', e.target.value)}
-                  placeholder="snapfromhome.com"
+                  placeholder="snapfromhome"
                 />
               </Field>
               <Field label="Custom Event Text (e.g., wedding/birthday)">
@@ -720,7 +720,7 @@ function newFrameTemplate() {
     ],
     footer: {
       show: true, y: 1845, height: 90,
-      text: 'snapfromhome.com', customText: '',
+      text: 'snapfromhome', customText: '',
       fontFamily: 'Inter', fontSize: 28, fontWeight: '400',
       color: '#999999', textAlign: 'center', customizable: true,
     },

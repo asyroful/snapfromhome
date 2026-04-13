@@ -14,7 +14,7 @@ import useBoothStore        from '../stores/boothStore'
 import { captureVideoFrame } from '../lib/canvas'
 
 const TOTAL_PHOTOS   = 3
-const COUNTDOWN_SECS = 7   // 7 seconds per photo
+const COUNTDOWN_SECS = 5   // 5 seconds per photo
 
 export default function BoothPage() {
   const navigate = useNavigate()
@@ -232,7 +232,6 @@ export default function BoothPage() {
               photoNum={currentPhotoIndex + 1}
               totalPhotos={TOTAL_PHOTOS}
             />
-            <FlashEffect active={showFlash} />
           </CameraView>
         )}
 
@@ -321,6 +320,9 @@ export default function BoothPage() {
           )}
         </div>
       </main>
+
+      {/* Full-screen Flash Effect */}
+      <FlashEffect active={showFlash} />
     </div>
   )
 }

@@ -248,7 +248,7 @@ export async function renderPrintLayout(photoDataUrls, frameConfig, overrides = 
 
     // Footer text in strip
     if (footer?.show) {
-      const footerText = overrides.footerText || footer.text || 'snapfromhome.com'
+      const footerText = overrides.footerText || footer.text || 'snapfromhome'
       ctx.save()
       ctx.font = `${footer.fontWeight || '400'} ${Math.round((footer.fontSize || 28) * (STRIP_W / (frameConfig.canvas.width || 630)))}px '${footer.fontFamily || 'Inter'}', sans-serif`
       ctx.fillStyle    = footer.color || '#999999'

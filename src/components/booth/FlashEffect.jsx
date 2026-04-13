@@ -9,7 +9,7 @@ export default function FlashEffect({ active }) {
     <div
       aria-hidden="true"
       className={`
-        absolute inset-0 bg-white z-30 pointer-events-none
+        fixed inset-0 bg-white z-[999] pointer-events-none
         ${active ? 'animate-flash' : 'opacity-0'}
       `}
     />
