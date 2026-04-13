@@ -1,0 +1,172 @@
+[
+  {
+    "id": "minimal",
+    "name": "Minimal",
+    "description": "Clean and simple — let your photos shine",
+    "category": "free",
+    "thumbnail": "/frames/minimal-thumb.jpg",
+    "overlay": null,
+    "canvas": {
+      "width": 630,
+      "height": 1980,
+      "backgroundColor": "#ffffff",
+      "borderRadius": 0
+    },
+    "slots": [
+      { "id": 1, "x": 45, "y": 45,   "width": 540, "height": 540, "borderRadius": 4 },
+      { "id": 2, "x": 45, "y": 645,  "width": 540, "height": 540, "borderRadius": 4 },
+      { "id": 3, "x": 45, "y": 1245, "width": 540, "height": 540, "borderRadius": 4 }
+    ],
+    "footer": {
+      "show": true,
+      "y": 1845,
+      "height": 90,
+      "text": "snapfromhome.com",
+      "customText": "",
+      "fontFamily": "Inter",
+      "fontSize": 28,
+      "fontWeight": "400",
+      "color": "#999999",
+      "textAlign": "center",
+      "customizable": true
+    },
+    "logo": null,
+    "premium": false
+  },
+  {
+    "id": "dark-minimal",
+    "name": "Dark Minimal",
+    "description": "Sleek dark strip with neon accents",
+    "category": "free",
+    "thumbnail": "/frames/dark-minimal-thumb.jpg",
+    "overlay": null,
+    "canvas": {
+      "width": 630,
+      "height": 1980,
+      "backgroundColor": "#0f0f0f",
+      "borderRadius": 0
+    },
+    "slots": [
+      { "id": 1, "x": 30, "y": 30,   "width": 570, "height": 570, "borderRadius": 0 },
+      { "id": 2, "x": 30, "y": 630,  "width": 570, "height": 570, "borderRadius": 0 },
+      { "id": 3, "x": 30, "y": 1230, "width": 570, "height": 570, "borderRadius": 0 }
+    ],
+    "footer": {
+      "show": true,
+      "y": 1845,
+      "height": 90,
+      "text": "snapfromhome.com",
+      "customText": "",
+      "fontFamily": "Inter",
+      "fontSize": 26,
+      "fontWeight": "300",
+      "color": "#FF6B9D",
+      "textAlign": "center",
+      "customizable": true
+    },
+    "logo": null,
+    "premium": false
+  },
+  {
+    "id": "cute",
+    "name": "Cute",
+    "description": "Pastel kawaii vibes with playful accents",
+    "category": "free",
+    "thumbnail": "/frames/cute-thumb.jpg",
+    "overlay": "/frames/cute-overlay.png",
+    "canvas": {
+      "width": 660,
+      "height": 2010,
+      "backgroundColor": "#FFF0F5",
+      "borderRadius": 0
+    },
+    "slots": [
+      { "id": 1, "x": 60, "y": 80,   "width": 540, "height": 540, "borderRadius": 12 },
+      { "id": 2, "x": 60, "y": 700,  "width": 540, "height": 540, "borderRadius": 12 },
+      { "id": 3, "x": 60, "y": 1320, "width": 540, "height": 540, "borderRadius": 12 }
+    ],
+    "footer": {
+      "show": true,
+      "y": 1900,
+      "height": 110,
+      "text": "snapfromhome ✨",
+      "customText": "",
+      "fontFamily": "Inter",
+      "fontSize": 30,
+      "fontWeight": "600",
+      "color": "#FF6B9D",
+      "textAlign": "center",
+      "customizable": true
+    },
+    "logo": null,
+    "premium": false
+  },
+  {
+    "id": "wedding",
+    "name": "Wedding",
+    "description": "Elegant gold & ivory for your special day",
+    "category": "premium",
+    "thumbnail": "/frames/wedding-thumb.jpg",
+    "overlay": "/frames/wedding-overlay.png",
+    "canvas": {
+      "width": 660,
+      "height": 2040,
+      "backgroundColor": "#FFFDF7",
+      "borderRadius": 0
+    },
+    "slots": [
+      { "id": 1, "x": 70, "y": 130,  "width": 520, "height": 520, "borderRadius": 0 },
+      { "id": 2, "x": 70, "y": 750,  "width": 520, "height": 520, "borderRadius": 0 },
+      { "id": 3, "x": 70, "y": 1370, "width": 520, "height": 520, "borderRadius": 0 }
+    ],
+    "footer": {
+      "show": true,
+      "y": 1940,
+      "height": 100,
+      "text": "With Love",
+      "customText": "Sarah & James • June 2025",
+      "fontFamily": "Playfair Display",
+      "fontSize": 28,
+      "fontWeight": "400",
+      "color": "#8B6914",
+      "textAlign": "center",
+      "customizable": true
+    },
+    "logo": null,
+    "premium": true
+  },
+  {
+    "id": "birthday",
+    "name": "Birthday",
+    "description": "Fun & festive for birthday celebrations",
+    "category": "premium",
+    "thumbnail": "/frames/birthday-thumb.jpg",
+    "overlay": "/frames/birthday-overlay.png",
+    "canvas": {
+      "width": 660,
+      "height": 2010,
+      "backgroundColor": "#FFFAF0",
+      "borderRadius": 0
+    },
+    "slots": [
+      { "id": 1, "x": 60, "y": 100,  "width": 540, "height": 540, "borderRadius": 8 },
+      { "id": 2, "x": 60, "y": 720,  "width": 540, "height": 540, "borderRadius": 8 },
+      { "id": 3, "x": 60, "y": 1340, "width": 540, "height": 540, "borderRadius": 8 }
+    ],
+    "footer": {
+      "show": true,
+      "y": 1910,
+      "height": 100,
+      "text": "🎉 Happy Birthday!",
+      "customText": "",
+      "fontFamily": "Inter",
+      "fontSize": 32,
+      "fontWeight": "700",
+      "color": "#E84393",
+      "textAlign": "center",
+      "customizable": true
+    },
+    "logo": null,
+    "premium": true
+  }
+]
