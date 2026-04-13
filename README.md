@@ -53,8 +53,8 @@ Ensure you have **Node.js** (version 18 or above) installed on your system.
 
 | Variable | Target Area | Description |
 | --- | --- | --- |
-| `VITE_ADMIN_USERNAME` | Frontend (Admin) | Username for `/admin` login. Default: `admin` |
-| `VITE_ADMIN_PASSWORD` | Frontend (Admin) | Password for `/admin` login. Default: `admin123` |
+| `VITE_ADMIN_USERNAME` | Frontend (Admin) | Username for `/admin` login. |
+| `VITE_ADMIN_PASSWORD` | Frontend (Admin) | Password for `/admin` login. |
 | `CLOUDINARY_CLOUD_NAME` | Backend (Netlify) | Your Cloudinary instance cloud name. |
 | `CLOUDINARY_API_KEY` | Backend (Netlify) | Cloudinary authentication API Key. |
 | `CLOUDINARY_API_SECRET` | Backend (Netlify) | Cloudinary authentication API Secret. |
