@@ -13,10 +13,10 @@ import {
 } from '../lib/canvas'
 
 const EFFECTS = [
-  { id: 'none', label: 'Normal', filter: 'none' },
-  { id: 'bw', label: 'B&W', filter: 'grayscale(100%)' },
-  { id: 'vintage', label: 'Vintage', filter: 'sepia(60%) contrast(110%) brightness(90%) hue-rotate(350deg)' },
-  { id: 'warm', label: 'Warm', filter: 'sepia(30%) saturate(140%) hue-rotate(345deg)' },
+  { id: 'none', label: 'Normal' },
+  { id: 'bw', label: 'B&W' },
+  { id: 'vintage', label: 'Vintage' },
+  { id: 'warm', label: 'Warm' },
 ]
 
 export default function PreviewPage() {
@@ -56,15 +56,15 @@ export default function PreviewPage() {
 
   const generateStrips = async (effectId = activeEffectId) => {
     setIsGenerating(true)
-    const eff = EFFECTS.find(e => e.id === effectId)?.filter || 'none'
+    const effId = effectId || 'none'
     try {
       // Single strip
-      const stripCanvas  = await renderStrip(photos, selectedFrame, { effectFilter: eff })
+      const stripCanvas  = await renderStrip(photos, selectedFrame, { effectFilter: effId })
       const stripDataUrl = canvasToDataUrl(stripCanvas, 'image/jpeg', 0.90)
       setSingleUrl(stripDataUrl)
 
       // Print layout
-      const printCanvas  = await renderPrintLayout(photos, selectedFrame, { effectFilter: eff })
+      const printCanvas  = await renderPrintLayout(photos, selectedFrame, { effectFilter: effId })
       const printDataUrl = canvasToDataUrl(printCanvas, 'image/jpeg', 0.88)
       setPrintUrl(printDataUrl)
 
